@@ -19,6 +19,8 @@ paths:
           schema:
             type: string
         #TODO3: add parameter to filter books by intervals of dates of the releaseDate
+        - $ref: '#/components/parameters/releaseDateStart'
+        - $ref: '#/components/parameters/releaseDateEnd'
       responses:
         200:
           description: The list of filtered books
@@ -95,41 +97,61 @@ paths:
           schema:
             type: string
       responses:
-        204:
+        200:
           description: Author deleted successfully
+
 components:
-  schemas:
-    Book:
-      type: object
-      properties:
-        id:
-          type: string
-        bookName:
-          type: string
-        author:
-          #TODO1: set it as a component with properties : id, name, sex (M or F)
-          type: string
-          $ref: '#/components/schemas/Author'
-        pageNumbers:
-          type: integer
-        topic:
-          type: string
-          enum:
-            - ROMANCE
-            - COMEDY
-            - OTHER
-        releaseDate:
+  #TODO3: add parameter to filter books by intervals of dates of the releaseDate
+    parameters:
+      releaseDateStart:
+        in: query
+        name: releaseDateStart
+        description: Filter books with a release date greater than or equal to this date
+        required: false
+        schema:
           type: string
           format: date
-    Author:
-      type: object
-      properties:
-        id:
+
+      releaseDateEnd:
+        in: query
+        name: releaseDateEnd
+        description: Filter books with a release date less than or equal to this date
+        required: false
+        schema:
           type: string
-        name:
-          type: string
-        sex:
-          type: string
-          enum:
-            - M
-            - F
+          format: date
+    schemas:
+      Book:
+        type: object
+        properties:
+          id:
+            type: string
+          bookName:
+            type: string
+          author:
+            #TODO1: set it as a component with properties : id, name, sex (M or F)
+            type: string
+            $ref: '#/components/schemas/Author'
+          pageNumbers:
+            type: integer
+          topic:
+            type: string
+            enum:
+              - ROMANCE
+              - COMEDY
+              - OTHER
+          releaseDate:
+            type: string
+            format: date
+      Author:
+        type: object
+        properties:
+          id:
+            type: string
+          name:
+            type: string
+          sex:
+            type: string
+            enum:
+              - M
+              - F
