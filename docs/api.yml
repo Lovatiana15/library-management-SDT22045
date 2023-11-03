@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: Library API
+  title: Library API-STD22045
   version: 1.0.0
   description: STD22045
 servers:
