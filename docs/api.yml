@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Library API-STD22045
-  version: 1.2.0
+  version: 1.3.0
   description: STD22045
 servers:
   - url: https://library.com
@@ -146,8 +146,24 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Author' 
-
+                $ref: '#/components/schemas/Author'
+  #TD2: try to delete multiple author
+  /authors/delete:
+    delete:
+      tags:
+        - Delete all author
+      summary: delete multiple authors
+      operationId: deleteAuthor
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+      responses:
+        200:
+          description: author deleted successfully
 #TD2:new path: create the two new entry points
   /books/{bookId}/authors/{aId}:
     put:
