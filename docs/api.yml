@@ -93,7 +93,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Author'   
+                $ref: '#/components/schemas/Author'  
+  #TD2:fix: delete author one by one by Id
+  /authors/{aId}: 
     delete:
       tags:
         - Authors
@@ -109,6 +111,11 @@ paths:
       responses:
         200:
           description: Author deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author' 
+
 
 components:
   #TODO3: add parameter to filter books by intervals of dates of the releaseDate
@@ -132,7 +139,7 @@ components:
           format: date
     schemas:
       #TD2: add new component crupdateBook
-      crupdateBook:
+      CrupdateBook:
         type: object
         properties:
           id:
@@ -150,28 +157,14 @@ components:
           releaseDate:
             type: string
             format: date
+    #TD2: use of heritage to avoid code redundancy
       Book:
-        type: object
-        properties:
-          id:
-            type: string
-          bookName:
-            type: string
-          author:
-            #TODO1: set it as a component with properties : id, name, sex (M or F)
-            type: string
-            $ref: '#/components/schemas/Author'
-          pageNumbers:
-            type: integer
-          topic:
-            type: string
-            enum:
-              - ROMANCE
-              - COMEDY
-              - OTHER
-          releaseDate:
-            type: string
-            format: date
+        allOf:
+          - $ref: '#/components/schemas/CrupdateBook'
+          - properties:
+              Author:
+                $ref: '#/components/schemas/Author'
+      
       Author:
         type: object
         properties:
