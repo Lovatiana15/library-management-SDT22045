@@ -116,7 +116,41 @@ paths:
               schema:
                 $ref: '#/components/schemas/Author' 
 
-
+#TD2:new path: create the two new entry points
+  /books/{bookId}/authors/{aId}:
+    put:
+      summary: Attach an Author to a book
+      operationId: attachAuthorToBook
+      parameters:
+        - in: path
+          name: bookId
+          description: Id of the book to which the author will be attached
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: aId
+          description: Id of the author to attach to the book
+          required: true
+          schema:
+              type: string
+      responses:
+        200:
+          description: Author attached to the book successfully
+  /books/authors:
+    put:
+      summary: Attach Authors to Books
+      operationId: attachAuthorsToBooks
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/CrupdateBook'
+      responses:
+        200:
+          description: Authors attached to books successfully
 components:
   #TODO3: add parameter to filter books by intervals of dates of the releaseDate
     parameters:
