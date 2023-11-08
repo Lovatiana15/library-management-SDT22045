@@ -1,0 +1,319 @@
+openapi: 3.0.3
+info:
+  title: Library API-STD22045
+  version: 1.4.0
+  description: STD22045
+servers:
+  - url: https://library.com
+paths:
+  /books:
+    get:
+      tags:
+        - Books
+      summary: Get all books
+      description: The returned books are ordered by updated datetime.
+      operationId: getBooks
+      parameters:
+        - in: query
+          name: bookName
+          description: Filter return books by given name
+          required: false
+          schema:
+            type: string
+#TODO3: add parameter to filter books by intervals of dates of the releaseDate
+        - $ref: '#/components/parameters/releaseDateStart'
+        - $ref: '#/components/parameters/releaseDateEnd'
+#TD2: added query parameters for pagination (page and pageSize)
+      #specify the page number you wish to retrieve
+        #TD3:create a pagination component
+        - $ref: '#/components/parameters/queryPagination' 
+      #specify number of elements per page
+        - in: query
+          name: pageSize
+          description: number of item
+          required: false
+          schema:
+            type: integer
+            default: 50
+      responses:
+        200:
+          description: Réponse 200
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response200'
+    put:
+      tags:
+        - Books
+      summary: Create or update a list of books
+      operationId: crupdateBooks
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/CrupdateBook'
+      responses:
+        200:
+          description: Réponse 200
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response200'
+  /authors:
+  #TODO2: complete GET (can be filtered by name) - PUT - DELETE
+    get:
+      tags:
+        - Authors
+      summary: Get all authors
+      description: Retrieve a list of authors
+      operationId: getAuthors
+      parameters:
+        - in: query
+          name: authorName
+          description: Filter author by name
+          required: false
+          schema:
+            type: string
+#TD2: added path parameters for pagination (page and pageSize)
+        - $ref: '#/components/parameters/pathPagination'
+        - in: path
+          name: pageSize
+          description: number of items
+          required: true
+          schema:
+            type: integer
+            default: 50
+      responses:
+        200:
+          description: Réponse 200
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response200' 
+    put:
+      tags:
+        - Authors
+      summary: Create or update an author
+      operationId: createOrUpdateAuthor
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Author'
+      responses:
+        200:
+          description: Réponse 200
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response200'
+  #TD2:fix: delete author one by one by Id
+  /authors/{aId}: 
+    delete:
+      tags:
+        - Authors
+      summary: Delete an author by ID
+      operationId: deleteAuthor
+      parameters:
+        - in: path
+          name: authorId
+          description: ID of the author to be deleted
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Author deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+  #TD2: try to delete multiple author
+  /authors/delete:
+    delete:
+      tags:
+        - Delete all author
+      summary: delete multiple authors
+      operationId: deleteAuthor
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+      responses:
+        200:
+          description: Réponse 200
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response200'
+#TD2:new path: create the two new entry points
+  /books/{bookId}/authors/{aId}:
+    put:
+      summary: Attach an Author to a book
+      operationId: attachAuthorToBook
+      parameters:
+        - in: path
+          name: bookId
+          description: Id of the book to which the author will be attached
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: aId
+          description: Id of the author to attach to the book
+          required: true
+          schema:
+              type: string
+      responses:
+        200:
+          description: Author attached to the book successfully
+  /books/authors:
+    put:
+      summary: Attach Authors to Books
+      operationId: attachAuthorsToBooks
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/updateBookAuthor'
+      responses:
+        200:
+          description: Authors attached to books successfully
+
+          
+components:
+  #TODO3: add parameter to filter books by intervals of dates of the releaseDate
+    parameters:
+      releaseDateStart:
+        in: query
+        name: releaseDateStart
+        description: Filter books with a release date greater than or equal to this date
+        required: false
+        schema:
+          type: string
+          format: date
+
+      releaseDateEnd:
+        in: query
+        name: releaseDateEnd
+        description: Filter books with a release date less than or equal to this date
+        required: false
+        schema:
+          type: string
+          format: date
+      #TD3:create a pagination component
+      queryPagination:
+        in: query
+        name: page
+        description: Page number for pagination
+        required: false
+        schema:
+          type: integer
+          default: 1
+      pathPagination:
+        in: path
+        name: page
+        description: Page number for pagination
+        required: true
+        schema:
+          type: integer
+          default: 1
+    schemas:
+      #TD2: add new component crupdateBook
+      CrupdateBook:
+        type: object
+        properties:
+          id:
+            type: string
+          bookName:
+            type: string
+          pageNumbers:
+            type: integer
+          topic:
+            type: string
+            enum:
+              - ROMANCE
+              - COMEDY
+              - OTHER
+          releaseDate:
+            type: string
+            format: date
+    #TD2: use of heritage to avoid code redundancy
+      Book:
+        allOf:
+          - $ref: '#/components/schemas/CrupdateBook'
+          - properties:
+              Author:
+                $ref: '#/components/schemas/Author'
+    # TD2: create new component updateBookAuthor
+      updateBookAuthor:
+        type: object
+        properties:
+          bookId:
+            type: string
+          authorId:
+            type: string
+      
+      Author:
+        type: object
+        properties:
+          id:
+            type: string
+          name:
+            type: string
+          sex:
+            type: string
+            enum:
+              - M
+              - F
+#TD3: create new component for reponse
+      responses:
+        type: object
+        properties:
+          status:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+          body:
+            type: object
+      Response200:
+        allOf:
+          - $ref: '#/components/schemas/responses'
+          - properties:
+              specificProperty200:
+                type: string
+
+      Response400:
+        allOf:
+          - $ref: '#/components/schemas/responses'
+          - properties:
+              specificProperty400:
+                type: string
+      Response403:
+        allOf:
+          - $ref: '#/components/schemas/responses'
+          - properties:
+              specificProperty403:
+                type: string
+
+      Response500:
+        allOf:
+          - $ref: '#/components/schemas/responses'
+          - properties:
+              specificProperty500:
+                type: string
+
+
+
+
+
