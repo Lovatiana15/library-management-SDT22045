@@ -61,6 +61,31 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Response200'
+#TD3: add new endpoint to import new book
+  /books/import:
+    post:
+      tags:
+        - import book
+      summary: Import new book
+      operationId: importBooks
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/CrupdateBook'
+      responses:
+        200:
+          description: List of imported books
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
+
+
   /authors:
   #TODO2: complete GET (can be filtered by name) - PUT - DELETE
     get:
@@ -109,6 +134,29 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Response200'
+#TD3: add new endpoint to import new author
+  /authors/import:
+    post:
+      tags:
+        - Authors
+      summary: Import new authors
+      operationId: importAuthors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Author'
+      responses:
+        200:
+          description: List of imported authors
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Author'
   #TD2:fix: delete author one by one by Id
   /authors/{aId}: 
     delete:
