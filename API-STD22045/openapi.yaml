@@ -251,8 +251,55 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Visitor'
-#Model actions (borrowing and returning books) taken by visitors.
-  
+#TD4:Model actions (borrowing and returning books) taken by visitors
+  /visitors/{visitorId}/borrow:
+    post:
+      tags:
+        - Visitors who borrow book
+      summary: Borrow a book
+      description: Borrow a book on behalf of a visitor
+      operationId: borrowBook
+      parameters:
+        - in: path
+          name: visitorId
+          description: ID of the visitor on whose behalf the book is borrowed
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Book details to be borrowed
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Book'
+      responses:
+        200:
+          description: Book borrowed successfully
+  /visitors/{visitorId}/return:
+    post:
+      tags:
+        - Visitors who return book
+      summary: Return a book
+      description: Return a book on behalf of a visitor
+      operationId: returnBook
+      parameters:
+        - in: path
+          name: visitorId
+          description: ID of the visitor on whose behalf the book is returned
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Book details to be returned
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Book'
+      responses:
+        200:
+          description: Book returned successfully
           
 components:
   #TODO3: add parameter to filter books by intervals of dates of the releaseDate
