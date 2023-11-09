@@ -234,7 +234,25 @@ paths:
       responses:
         200:
           description: Authors attached to books successfully
-
+#managing visitors who borrow and return books
+  /visitors:
+    get:
+      tags:
+        - Visitors
+      summary: Get all visitors
+      description: Retrieve a list off all visitors
+      operationId: getVisitors
+      responses:
+        200:
+          description: List of all visitors
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Visitor'
+#Model actions (borrowing and returning books) taken by visitors.
+  
           
 components:
   #TODO3: add parameter to filter books by intervals of dates of the releaseDate
@@ -360,7 +378,16 @@ components:
           - properties:
               specificProperty500:
                 type: string
-    
+#TD4: add new entite visitor
+      Visitor:
+        type: object
+        properties:
+          id:
+            type: string
+          name:
+            type: string
+          reference:
+            type: string
 
 
 
