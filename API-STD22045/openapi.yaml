@@ -119,6 +119,37 @@ paths:
       responses:
         200:
           description: Book returned successfully
+#TD4:get the list of books borrowed and the list of available books
+  /books/borrowed:
+    get:
+      tags:
+        - Get list of book borrow
+      summary: Get borrowed books
+      operationId: getBorrowedBooks
+      responses:
+        200:
+          description: The list of borrowed books
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
+  /books/available:
+    get:
+      tags:
+        - Get list Books available
+      summary: Get available books
+      operationId: getAvailableBooks
+      responses:
+        200:
+          description: The list of available books
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
 
 
   /authors:
