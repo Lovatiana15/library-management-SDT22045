@@ -65,6 +65,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Response200'
+      security:
+        - authorization:
+          - write
 #TD3: add new endpoint to import new book
   /books/import:
     post:
@@ -88,6 +91,9 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Book'
+      security:
+        - authorization:
+          - write            
 
 #TD4: add endpoints for borrowing a book and returning it
   /books/{bookId}/borrow:
@@ -106,7 +112,9 @@ paths:
       responses:
         200:
           description: Book borrowed successfully
-
+      security:
+        - authorization:
+          - write
   /books/{bookId}/return:
     post:
       tags:
@@ -123,6 +131,9 @@ paths:
       responses:
         200:
           description: Book returned successfully
+      security:
+        - authorization:
+          - write    
 #TD4:get the list of books borrowed and the list of available books
   /books/borrowed:
     get:
@@ -139,6 +150,9 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Book'
+      security:
+        - authorization:
+          - write            
   /books/available:
     get:
       tags:
@@ -209,6 +223,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Response200'
+      security:
+        - authorization:
+          - write          
 #TD3: add new endpoint to import new author
   /authors/import:
     post:
@@ -232,6 +249,9 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Author'
+      security:
+        - authorization:
+          - write            
   #TD2:fix: delete author one by one by Id
   /authors/{aId}: 
     delete:
@@ -253,6 +273,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Response200'
+      security:
+        - authorization:
+          - write          
   #TD2: try to delete multiple author
   /authors/delete:
     delete:
@@ -274,6 +297,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Response200'
+      security:
+        - authorization:
+          - write          
 #TD2:new path: create the two new entry points
   /books/{bookId}/authors/{aId}:
     put:
@@ -295,6 +321,9 @@ paths:
       responses:
         200:
           description: Author attached to the book successfully
+      security:
+        - authorization:
+          - write    
   /books/authors:
     put:
       summary: Attach Authors to Books
@@ -329,6 +358,9 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Visitor'
+      security:
+        - authorization:
+          - write            
 #TD4:the administrator should be able to know which books have been borrowed and returned by this visitor
   /visitors/{visitorId}/borrowed-books:
     get:
@@ -352,6 +384,9 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/CrupdateBook'
+      security:
+        - authorization:
+          - write            
 
   /visitors/{visitorId}/returned-books:
     get:
@@ -375,6 +410,9 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/CrupdateBook'
+      security:
+        - authorization:
+          - write            
 
 #TD4:Model actions (borrowing and returning books) taken by visitors
   /visitors/{visitorId}/borrow:
@@ -401,6 +439,9 @@ paths:
       responses:
         200:
           description: Book borrowed successfully
+      security:
+        - authorization:
+          - write    
   /visitors/{visitorId}/return:
     post:
       tags:
@@ -425,6 +466,9 @@ paths:
       responses:
         200:
           description: Book returned successfully
+      security:
+        - authorization:
+          - write    
 #TD4: find out about the visitor's activities during a given period
   /visitors/{visitorId}/activities:
     get:
@@ -462,6 +506,9 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/VisitorActivity'
+      security:
+        - authorization:
+          - write            
 
 components:
   #TODO3: add parameter to filter books by intervals of dates of the releaseDate
