@@ -317,6 +317,53 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Visitor'
+#TD4:the administrator should be able to know which books have been borrowed and returned by this visitor
+  /visitors/{visitorId}/borrowed-books:
+    get:
+      tags:
+        - book borrowed by a visitor
+      summary: Check books borrowed by a visitor
+      operationId: getBorrowedBooksByVisitor
+      parameters:
+        - in: path
+          name: visitorId
+          description: ID of the visitor
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: List of books borrowed by the visitor
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CrupdateBook'
+
+  /visitors/{visitorId}/returned-books:
+    get:
+      tags:
+        - book returned by visitor
+      summary: Check books returned by a visitor
+      operationId: getReturnedBooksByVisitor
+      parameters:
+        - in: path
+          name: visitorId
+          description: ID of the visitor
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: List of books returned by the visitor
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CrupdateBook'
+
 #TD4:Model actions (borrowing and returning books) taken by visitors
   /visitors/{visitorId}/borrow:
     post:
