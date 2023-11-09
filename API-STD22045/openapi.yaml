@@ -43,6 +43,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Response200'
+      security:
+        - authorization:
+          - read          
     put:
       tags:
         - Books
@@ -151,7 +154,9 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Book'
-
+      security:
+        - authorization:
+          - read
 
   /authors:
   #TODO2: complete GET (can be filtered by name) - PUT - DELETE
@@ -183,7 +188,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Response200' 
+                $ref: '#/components/schemas/Response200'
+      security:
+        - authorization:
+          - read
     put:
       tags:
         - Authors
@@ -301,6 +309,9 @@ paths:
       responses:
         200:
           description: Authors attached to books successfully
+      security:
+        - authorization:
+          - read
 #managing visitors who borrow and return books
   /visitors:
     get:
