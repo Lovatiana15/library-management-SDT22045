@@ -679,8 +679,8 @@ components:
           implicit:
             authorizationUrl: https://auth.example.com/authorize
             scopes:
-              read: Allows read operations
-              write: Allows write operations
+              read: Allows read operations | For anyone (Administrator and Visitor)
+              write: Allows write operations | For Administrator only
             refreshUrl: https://auth.example.com/refresh
           
       
