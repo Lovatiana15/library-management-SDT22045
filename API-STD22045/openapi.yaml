@@ -85,6 +85,41 @@ paths:
                 items:
                   $ref: '#/components/schemas/Book'
 
+#TD4: add endpoints for borrowing a book and returning it
+  /books/{bookId}/borrow:
+    post:
+      tags:
+        - Books borrowed
+      summary: Borrow a book
+      operationId: borrowBook
+      parameters:
+        - in: path
+          name: bookId
+          description: ID of the book to be borrowed
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Book borrowed successfully
+
+  /books/{bookId}/return:
+    post:
+      tags:
+        - Books returned
+      summary: Return a book
+      operationId: returnBook
+      parameters:
+        - in: path
+          name: bookId
+          description: ID of the book to be returned
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Book returned successfully
+
 
   /authors:
   #TODO2: complete GET (can be filtered by name) - PUT - DELETE
@@ -358,6 +393,11 @@ components:
           releaseDate:
             type: string
             format: date
+          status:
+            type: string
+            enum:
+              - AVAILABLE
+              - BORROWED
     #TD2: use of heritage to avoid code redundancy
       Book:
         allOf:
