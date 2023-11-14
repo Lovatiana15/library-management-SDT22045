@@ -38,11 +38,11 @@ paths:
             default: 50
       responses:
         200:
-          description: The list of filtered books
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Response200'
+          $ref: '#/components/responses/BookList_200'
+        400:
+          $ref: '#/components/responses/400'
+        403:
+          $ref: '#/components/responses/403'
       security:
         - authorization:
           - read          
@@ -64,7 +64,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Response200'
+                $ref: '#/components/schemas/BookListBody'
+        400:
+          $ref: '#/components/responses/400'
       security:
         - authorization:
           - write
@@ -202,7 +204,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Response200'
+                $ref: '#/components/schemas/Author'
       security:
         - authorization:
           - read
@@ -222,7 +224,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Response200'
+                $ref: '#/components/schemas/Author'
       security:
         - authorization:
           - write          
@@ -272,7 +274,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Response200'
+                $ref: '#/components/schemas/Author'
       security:
         - authorization:
           - write          
@@ -296,7 +298,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Response200'
+                $ref: '#/components/schemas/Author' 
       security:
         - authorization:
           - write          
@@ -547,6 +549,25 @@ components:
         schema:
           type: integer
           default: 1
+    responses:
+      BookList_200:
+        description: List of books
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookListBody'
+      400:
+        description: Bad Request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BadRequestBody'
+      403:
+        description: Forbidden
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ForbidenRequestBody'
     schemas:
       #TD2: add new component crupdateBook
       CrupdateBook:
@@ -601,7 +622,7 @@ components:
               - M
               - F
 #TD3: create new component for reponse
-      responses:
+      responsesStatus:
         type: object
         properties:
           status:
@@ -613,32 +634,36 @@ components:
                 type: string
           body:
             type: object
-      Response200:
+      responseTemplate:
         allOf:
-          - $ref: '#/components/schemas/responses'
+          - $ref: '#/components/schemas/responsesStatus'
           - properties:
-              specificProperty200:
-                type: string
-
-      Response400:
+              body: 
+                type: object
+      BadRequestBody:
         allOf:
-          - $ref: '#/components/schemas/responses'
-          - properties:
-              specificProperty400:
-                type: string
-      Response403:
+          - $ref: '#/components/schemas/responseTemplate'
+        example:
+          status:
+            code: 400
+            message: Bad requestBody
+          body: { }
+      ForbidenRequestBody:
         allOf:
-          - $ref: '#/components/schemas/responses'
-          - properties:
-              specificProperty403:
-                type: string
-
-      Response500:
+          - $ref: '#/components/schemas/responseTemplate'
+        example:
+          status:
+            code: 500
+            message: Forbidden
+          body: { }
+      BookListBody:
         allOf:
-          - $ref: '#/components/schemas/responses'
+          -  $ref: '#/components/schemas/responseTemplate'
           - properties:
-              specificProperty500:
-                type: string
+              body:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
 #TD4: add new entite visitor
       Visitor:
         type: object
